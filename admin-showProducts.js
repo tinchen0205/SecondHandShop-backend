@@ -4,7 +4,7 @@ const mysql = require('mysql2/promise');
 const cors = require('cors'); // 使用 cors 中間件
 
 const app = express();
-const port = 3000; // 設定後端伺服 port
+const port = 3001; // 設定後端伺服 port
 let con;
 
 // 連接到 MySQL 資料庫
@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 // 獲取所有使用者數據
 app.get('/products', async (req, res) => {
   try {                                                 //改成你自己的
-    const [rows] = await con.execute('SELECT catelog , product_name , number , price FROM products');
+    const [rows] = await con.execute('SELECT category , product_name , product_code , price FROM products');
     res.json(rows);
   } catch (error) {
     console.error('Error fetching users: ' + error.stack);
