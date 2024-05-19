@@ -4,14 +4,14 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise'); 
 
 const app = express();
-const port = 3000; //設定後端伺服port
+const port = 3001; //設定後端伺服port
 let con ;
 // 連接到MySQL資料庫
 async function connectToMySQL(){
  con = await mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '12345678',//自己改一下
+  password: 'd8ty5mk',//自己改一下
   database: 'mydb'
 });
 console.log("連接成功"); 
@@ -47,7 +47,7 @@ app.post('/register', async (req, res,) => {
 
 // 啟動伺服器  指令node 檔名  ex. node app.js  關掉 ctrl + c
 app.listen(port, () => {
-  console.log(`Server is listening at http://localhost:${port}`);
+  console.log(`Server is listening at http://localhost:${port} 這是Register`);
 });
 
 connectToMySQL(); //連接MySQL

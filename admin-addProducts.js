@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise');
 
 const app = express();
-const port = 3000;
+const port = 3004;
 let con;
 
 // 連接到MySQL資料庫
@@ -46,7 +46,7 @@ app.post('/products', async (req, res) => {
 
 // 啟動伺服器
 app.listen(port, () => {
-  console.log(`Server is listening at http://localhost:${port}`);
+  console.log(`Server is listening at http://localhost:${port} 這是addProducts`);
 });
 
 connectToMySQL(); // 連接MySQL

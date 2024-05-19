@@ -51,7 +51,7 @@ app.post('/login', async (req, res) => {
   });
 // 啟動伺服器  指令node 檔名  ex. node app.js  關掉 ctrl + c
 app.listen(port, () => {
-  console.log(`Server is listening at http://localhost:${port}`);
+  console.log(`Server is listening at http://localhost:${port} 這是Login` );
 });
 
 connectToMySQL(); //連接MySQL

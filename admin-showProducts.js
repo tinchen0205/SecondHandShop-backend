@@ -4,7 +4,7 @@ const mysql = require('mysql2/promise');
 const cors = require('cors'); // 使用 cors 中間件
 
 const app = express();
-const port = 3001; // 設定後端伺服 port
+const port = 3003; // 設定後端伺服 port
 let con;
 
 // 連接到 MySQL 資料庫
@@ -40,5 +40,5 @@ app.get('/products', async (req, res) => {
 
 // 啟動伺服器
 app.listen(port, () => {
-  console.log(`Server is listening at http://localhost:${port}`);
+  console.log(`Server is listening at http://localhost:${port} 這是showProducts`);
 });
