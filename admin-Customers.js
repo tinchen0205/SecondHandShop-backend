@@ -12,7 +12,7 @@ async function connectToMySQL() {
   con = await mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'd8ty5mk', // 修改為你的密碼
+    password: 'secondhandshop', // 修改為你的密碼
     database: 'mydb' // 修改為你的資料庫名稱
   });
   console.log("連接成功admin");
@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 // 獲取所有使用者數據
 app.get('/Customers', async (req, res) => {
   try {                                                 //改成你自己的
-    const [rows] = await con.execute('SELECT email, name FROM accounts');
+    const [rows] = await con.execute('SELECT email, name FROM user');
     res.json(rows);
   } catch (error) {
     console.error('Error fetching users: ' + error.stack);

@@ -11,7 +11,7 @@ async function connectToMySQL(){
  con = await mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'd8ty5mk',//自己改一下
+  password: 'secondhandshop',//自己改一下
   database: 'mydb'
 });
 console.log("連接成功"); 
@@ -35,7 +35,7 @@ app.post('/register', async (req, res,) => {
     const { email, password, name } = req.body; 
     try {
                                     //這裡也要改一下
-      await con.execute('INSERT INTO  accounts(email,password,name) VALUES (?, ?, ?)', [email, password, name]);// 把資料新增到資料庫
+      await con.execute('INSERT INTO  user(email,password,name) VALUES (?, ?, ?)', [email, password, name]);// 把資料新增到資料庫
       
       console.log('User registered successfully');//成功會顯示這個
       res.status(200).send('User registered successfully');

@@ -10,7 +10,7 @@ async function connectToMySQL(){
  con = await mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'd8ty5mk',
+  password: 'secondhandshop',
   database: 'mydb'
 });
 console.log("連接成功"); 
@@ -30,7 +30,7 @@ app.use(function(req,res,next){
 })
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const query = 'SELECT * FROM accounts WHERE email = ? AND password = ?';
+    const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
     try {
       // 使用 con.execute() 代替 db.query()
       const [results, fields] = await con.execute(query, [email, password]);

@@ -12,7 +12,7 @@ async function connectToMySQL() {
   con = await mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'd8ty5mk', // 修改為你的密碼
+    password: 'secondhandshop', // 修改為你的密碼
     database: 'mydb' // 修改為你的資料庫名稱
   });
   console.log("連接成功admin");
