@@ -37,7 +37,7 @@ app.get('/products', async (req, res) => {
       res.json(rows);
     } else {
       // 返回所有商品
-      const [rows] = await con.execute('SELECT imgURL, product_name, description, price FROM products');
+      const [rows] = await con.execute('SELECT imgURL, product_name, description, price,product_code FROM products');
       res.json(rows);
     }
   } catch (error) {

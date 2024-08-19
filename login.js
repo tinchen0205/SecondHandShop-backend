@@ -36,9 +36,9 @@ app.post('/login', async (req, res) => {
       const [results, fields] = await con.execute(query, [email, password]);
       if (results.length === 1) {
         // 如果登录成功，从数据库结果中获取用户名
-        const { name } = results[0]; // 假设数据库中有名为 'name' 的列
+        const { id,name } = results[0]; // 假设数据库中有名为 'name' 的列
         // 将用户名包含在响应中
-        res.json({ name, message: 'Login successful' });
+        res.json({ id,name, message: 'Login successful' });
       } else {
         res.status(401).json({ message: 'Invalid email or password' });
         //res.status(401).send('Invalid email or password' );
