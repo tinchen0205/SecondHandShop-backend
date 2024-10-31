@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 // show Products
 app.get('/products', async (req, res) => {
   try {                                                 //改成你自己的
-    const [rows] = await con.execute('SELECT category , product_name , product_code , price FROM products');
+    const [rows] = await con.execute('SELECT category , product_name , product_code , price, quantity FROM products');
     res.json(rows);
   } catch (error) {
     console.error('Error fetching users: ' + error.stack);
@@ -39,10 +39,10 @@ app.get('/products', async (req, res) => {
 });
 // add Products
 app.post('/products', async (req, res) => {
-  const { category, name, productCode, imageUrl, description, price } = req.body;
+  const { category, name, imageUrl, description, price ,quantity} = req.body;
   try {
     // 將資料新增到資料庫
-    await con.execute('INSERT INTO products (category, product_name, product_code, imgURL, description, price) VALUES (?, ?, ?, ?, ?, ?)', [category, name, productCode, imageUrl, description, price]);
+    await con.execute('INSERT INTO products (category, product_name, imgURL, description, price, quantity) VALUES (?, ?, ?, ?, ?, ?)', [category, name, imageUrl, description, price, quantity]);
 
     console.log('Product added successfully'); // 成功會顯示這個
     res.status(200).send('Product added successfully');
