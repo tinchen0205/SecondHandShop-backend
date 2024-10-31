@@ -37,7 +37,7 @@ app.get('/getRentals', async (req, res) => {
       res.json(rows);
     } else {
       // 返回所有商品
-      const [rows] = await con.execute('SELECT imgURL, product_name, description, price FROM rentals');
+      const [rows] = await con.execute('SELECT imgURL, product_name, status, rental_days, price FROM rentals');
       res.json(rows);
     }
   } catch (error) {
