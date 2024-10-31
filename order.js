@@ -10,10 +10,10 @@ let con;
 async function connectToMySQL() {
   try {
     con = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'secondhandshop', // 請確認你的MySQL密碼是否正確
-      database: 'mydb'
+    host: '35.194.152.13',
+    user: 'root',
+    password: 'mRPyuj^9Be`GsK>L', // 修改為你的密碼
+    database: 'puproject' // 修改為你的資料庫名稱
     });
     console.log("連接成功");
   } catch (error) {
