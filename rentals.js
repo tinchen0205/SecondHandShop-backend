@@ -10,10 +10,10 @@ let con;
 // 連接到 MySQL 資料庫
 async function connectToMySQL() {
   con = await mysql.createConnection({
-    host: 'localhost',
+    host: '35.194.152.13',
     user: 'root',
-    password: 'secondhandshop', // 修改為你的密碼
-    database: 'mydb' // 修改為你的資料庫名稱
+    password: 'mRPyuj^9Be`GsK>L', // 修改為你的密碼
+    database: 'puproject' // 修改為你的資料庫名稱
   });
   console.log("連接成功admin");
 }
@@ -133,6 +133,52 @@ app.get('/Rentalkeywordsearch', async (req, res) => {
       }
   });
   
+  // 獲取訂單詳細資訊的 GET 請求
+app.get('/rentalorder/:orderId', async (req, res) => {
+  const orderId = req.params.orderId;
+
+  try {
+    // 獲取訂單基本資料
+    const [orderRows] = await con.execute(`
+      SELECT * FROM rental_orders WHERE id = ?
+    `, [orderId]);  // 使用 'id' 而不是 'order_id'
+
+    if (orderRows.length === 0) {
+      return res.status(404).json({ error: '找不到訂單' });
+    }
+
+    const order = orderRows[0];
+
+    // 獲取訂單中的商品資料
+    const [orderItemsRows] = await con.execute(`
+      SELECT * FROM rental_order_items WHERE order_id = ?
+    `, [orderId]);
+
+    // 構造回應的訂單詳細資料
+    const orderDetails = {
+      orderId: order.id,  // 使用 'id' 而不是 'order_id'
+      orderDate: order.created_at,  // 確認你的 orders 表中有適當的日期欄位
+      totalAmount: order.total_amount,
+      delivery: {
+        deliveryAddress: order.delivery_address,
+        deliveryDateTime: order.delivery_datetime,
+        returnDateTime: order.returnDateTime
+      },
+      user: {
+        name: order.name,
+        email: order.email,
+        tel: order.tel,
+        gender: order.gender
+      },
+      items: orderItemsRows
+    };
+
+    res.status(200).json(orderDetails);
+  } catch (error) {
+    console.error('獲取訂單詳情失敗', error);
+    res.status(500).json({ error: '獲取訂單詳情失敗' });
+  }
+});
     
     
     
