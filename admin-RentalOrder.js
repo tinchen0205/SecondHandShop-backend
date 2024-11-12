@@ -40,6 +40,6 @@ app.get('/products', async (req, res) => {
 
 
 // 啟動伺服器
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server is listening at http://localhost:${port} 這是admin-Products`);
 });
