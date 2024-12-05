@@ -180,7 +180,40 @@ app.get('/rentalorder/:orderId', async (req, res) => {
   }
 });
     
-    
+app.get('/rentalorders/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const [rentalorders] = await con.execute('SELECT * FROM rental_orders WHERE user_id = ?', [userId]);
+
+    if (rentalorders.length === 0) {
+      return res.status(404).json({ message: '沒有找到該用戶的訂單' });
+    }
+
+    const rentalordersWithItems = [];
+    for (const rentalorder of rentalorders) {
+      const [rentalorderItems] = await con.execute('SELECT * FROM rental_order_items WHERE order_id = ?', [rentalorder.id]);
+      rentalordersWithItems.push({
+        orderName: rentalorder.name,
+        orderEmail: rentalorder.email,
+        orderTel: rentalorder.tel,
+        orderGender: rentalorder.gender,
+        orderAddress: rentalorder.delivery_address,
+        tradeDateTime: rentalorder.delivery_datetime,
+        returnDateTime: rentalorder.return_datetime,
+        orderId: rentalorder.id,
+        orderDate: rentalorder.created_at, // 假設有 created_at 欄位
+        totalAmount: rentalorder.total_amount,
+        items: rentalorderItems
+      });
+    }
+
+    res.status(200).json({ orders: rentalordersWithItems });
+  } catch (error) {
+    console.error('獲取訂單失敗', error);
+    res.status(500).json({ error: '獲取訂單失敗' });
+  }
+});
+
     
 
 // 啟動伺服器
