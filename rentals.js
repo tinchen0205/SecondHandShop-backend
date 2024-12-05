@@ -113,9 +113,10 @@ app.get('/Rentalkeywordsearch', async (req, res) => {
           // 更新 rentals 表中的 status 欄位為 "已出租"
           const [rentalUpdateResult] = await con.execute(`
             UPDATE rentals 
-            SET status = '已出租'
+            SET status = '已出租',return_datetime=?
             WHERE id = ?
           `, [
+              delivery.returnDateTime,
               rentalItem.id // 確保這裡使用正確的 product_id
           ]);
   
@@ -213,6 +214,64 @@ app.get('/rentalorders/:userId', async (req, res) => {
     res.status(500).json({ error: '獲取訂單失敗' });
   }
 });
+
+app.get('/rentalordersInform/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const [rentalorders] = await con.execute('SELECT * FROM rental_orders WHERE user_id = ?', [userId]);
+
+    if (rentalorders.length === 0) {
+      return res.status(404).json({ message: '沒有找到該用戶的訂單' });
+    }
+
+    const rentalordersWithItems = [];
+    const today = new Date(); // 取得當前日期
+
+    for (const rentalorder of rentalorders) {
+      const returnDate = new Date(rentalorder.return_datetime);
+
+      // 先篩選訂單，確認歸還日期在今天以後才處理
+      if (returnDate >= today) {
+        console.log('符合條件的訂單:', rentalorder); // 輸出符合條件的訂單
+
+        // 查詢對應的商品資料
+        const [rentalorderItems] = await con.execute('SELECT * FROM rental_order_items WHERE order_id = ?', [rentalorder.id]);
+
+        // 輸出所有商品
+        console.log('訂單對應的商品:', rentalorderItems); // 輸出該訂單的所有商品
+
+        // 如果有商品，將商品資訊加入該訂單
+        if (rentalorderItems.length > 0) {
+          // 將歸還時間添加到每個商品資料中
+          const rentalItemsWithReturnDate = rentalorderItems.map(item => ({
+            ...item,
+            return_datetime: rentalorder.return_datetime, // 從 rental_orders 取得歸還時間並加入每個商品
+          }));
+
+          rentalordersWithItems.push({
+            orderName: rentalorder.name,
+            orderEmail: rentalorder.email,
+            orderTel: rentalorder.tel,
+            orderGender: rentalorder.gender,
+            orderAddress: rentalorder.delivery_address,
+            tradeDateTime: rentalorder.delivery_datetime,
+            returnDateTime: rentalorder.return_datetime, // 包含該訂單的歸還時間
+            orderId: rentalorder.id,
+            orderDate: rentalorder.created_at, // 假設有 created_at 欄位
+            totalAmount: rentalorder.total_amount,
+            items: rentalItemsWithReturnDate // 傳遞加入歸還時間的商品資料
+          });
+        }
+      }
+    }
+
+    res.status(200).json({ orders: rentalordersWithItems });
+  } catch (error) {
+    console.error('獲取訂單失敗', error);
+    res.status(500).json({ error: '獲取訂單失敗' });
+  }
+});
+
 
     
 
