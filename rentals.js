@@ -246,6 +246,7 @@ app.get('/rentalordersInform/:userId', async (req, res) => {
           const rentalItemsWithReturnDate = rentalorderItems.map(item => ({
             ...item,
             return_datetime: rentalorder.return_datetime, // 從 rental_orders 取得歸還時間並加入每個商品
+            delivery_datetime :rentalorder.delivery_datetime
           }));
 
           rentalordersWithItems.push({
